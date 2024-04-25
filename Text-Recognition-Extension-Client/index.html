@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Text Recognition</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<link rel="stylesheet" href="style.css">
+    <script src="jquery-3.7.1.min.js" defer></script>
+		<script src="script.js" defer></script>
+	</head>
+
+  <body>
+
+    <div id="settings-panel" class="top-frame">
+      <div class="container container-right">
+        <label class="label-input-checkbox" for="checkbox-dark-mode">DARK MODE</label>
+        <input id="checkbox-dark-mode" class="input-checkbox" type="checkbox">
+      </div>
+    </div>
+
+    <div id="login" class="body-frame hidden">
+      <div class="container">
+        <input id="l-login" class="input-text" type="text" placeholder="Login ..." minlength=6 maxlength=15>
+        <input id="l-password" class="input-text" type="password" placeholder="Password ..." minlength=9 maxlength=20>
+        <div class="wide-box">
+          <div class="centred-box">
+            <label class="label-input-checkbox" for="l-remember">Remember login</label>
+            <input id="l-remember" class="input-checkbox" type="checkbox" >
+          </div>
+        </div>
+        <button id="l-reset-password" class="buttton-resend">RESET PASSWORD</button>
+        <button id="l-sign-in" class="button-action">SIGN IN</button>
+        <div class="blank"></div>
+        <button id="l-sign-up" class="button-sign">Sign up page</button>
+      </div>
+    </div>
+
+    <div id="signup" class="body-frame hidden">
+      <div class="container">
+        <input id="s-email" class="input-text" type="email" placeholder="E-mail ..." maxlength="40">
+        <input id="s-login" class="input-text" type="text" placeholder="Login ..." minlength="6" maxlength="15">
+        <input id="s-password" class="input-text" type="password" placeholder="Password ..." minlength="9" maxlength="20">
+        <input id="s-password-repeat" class="input-text" type="password" placeholder="Repeat password ..." minlength="9" maxlength="20">
+        <button id="s-sign-up" class="button-action">SIGN UP</button>
+        <div class="blank"></div>
+        <button id="s-return" class="button-return">Login page</button>
+      </div>
+    </div>
+
+    <div id="signup-confirm" class="body-frame hidden">
+      <div class="container">
+        <input id="sc-code" class="input-text" type="text" placeholder="Verification code ...">
+        <button id="sc-resend" class="buttton-resend">RESEND CODE</button>
+        <button id="sc-continue" class="button-action">CONTINUE</button>
+        <div class="blank"></div>
+        <button id="sc-return" class="button-return">Login page</button>
+      </div>
+    </div>
+
+    <div id="reset-email" class="body-frame hidden">
+      <div class="container">
+        <input id="re-email" class="input-text" type="email" placeholder="E-mail ..." maxlength="40">
+        <button id="re-send" class="button-action">SEND CODE</button>
+        <div class="blank"></div>
+        <button id="re-return" class="button-return">Login page</button>
+      </div>
+    </div>
+
+    <div id="reset-new" class="body-frame hidden">
+      <div class="container">
+        <input id="rn-code" class="input-text" type="text" placeholder="Verification code ...">
+        <button id="rn-resend" class="buttton-resend">RESEND CODE</button>
+        <input id="rn-password" class="input-text" type="password" placeholder="Password ..." minlength="9" maxlength="20">
+        <input id="rn-password-repeat" class="input-text" type="password" placeholder="Repeat password ..." minlength="9" maxlength="20">
+        <button id="rn-continue" class="button-action">CHANGE PASSWORD</button>
+        <div class="blank"></div>
+        <button id="rn-return" class="button-return">Login page</button>
+      </div>
+    </div>
+    
+    <div id="text-recognition" class="body-frame hidden">
+      <div class="container">
+        <img id="tr-preview" class="image-preview">
+        <button id="tr-copy" class="button-action">Copy from clipboard</button>
+        <div class="wide-box">
+          <div class="centred-box">
+            <label for="tr-languages">Choose language</label>
+            <select id="tr-languages" autocomplete="on">
+              <option value="" selected>None</option>
+            </select>
+          </div>
+        </div>
+        <button id="tr-send" class="button-action">Send</button>
+        <button id="tr-recognised-copy" class="button-copy">Copy recognised text</button>
+        <button id="tr-translated-copy" class="button-copy">Copy translated text</button>
+        <div class="blank"></div>
+        <button id="tr-logout" class="button-logout">LOGOUT</button>
+      </div>
+    </div>
+
+    <!-- <div id="notify-succes"></div>
+    <div id="notify-error"></div>
+    <div id="notify-warning"></div> -->
+
+  </body>
+
+</html>

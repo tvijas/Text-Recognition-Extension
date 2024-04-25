@@ -1,0 +1,600 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "TextRecognitionService",
+      "description": "Text recognition service endpoints"
+    }
+  ],
+  "paths": {
+    "/recognize": {
+      "post": {
+        "summary": "Text recognition from Image",
+        "description": "Recognizes text from image and optionally translates value to chosen language",
+        "operationId": "detectText",
+        "requestBody": {
+          "description": "Request body contain: access token, image data in base64Data format and optional language parameter in ISO 639-1 (ru, en, pl...) format. If translation is unnecessary leave target_language with null value",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecognizeRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If access token is valid and image has correct format the operation will be successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecognizeResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If access token isn't valid or base64Data is blank",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecognizeResponseFailureExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "summary": "Registration",
+        "description": "Manual registration with email confirmation",
+        "operationId": "signup",
+        "requestBody": {
+          "description": "Request body contains: email, login and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If validation is successful user will be created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignupResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If validation is failed controller will return tis response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignupResponseFailureExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Manual authorization",
+        "operationId": "login",
+        "requestBody": {
+          "description": "Request body contains: login and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If validation is successful user will be created and controller will return access_token and refresh_token in the body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If validation is failed controller will return this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseFailureExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/confirm": {
+      "post": {
+        "summary": "Email confirmation",
+        "description": "After registration you will receive confirmation code on email",
+        "operationId": "signup",
+        "requestBody": {
+          "description": "Request body contains: email and verification_code",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If validation is successful user's account will be confirmed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If validation is failed controller will return this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponseFailureExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  "/refresh": {
+    "patch": {
+      "summary": "Refresh tokens",
+      "description": "Refreshes access and refresh token",
+      "operationId": "refresh",
+      "requestBody": {
+        "description": "Request body contains: refresh and access token",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RefreshRequestExample"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "If validation is successful you will receive cookies with new refresh and access token in http headers",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshResponseSuccessExample"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "If validation is failed controller will return this response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshResponseFailureExample"
+              }
+            }
+          }
+        }
+      }
+    }
+
+  },
+    "/resetPassword": {
+      "post": {
+        "summary": "Reset account password",
+        "description": "Resets password via verification code",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "description": "Request body contains: verification code, email and new password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If validation is successful you will receive new verification code to email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If validation is failed controller will return this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponseFailureCodeNotFoundExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If validation is failed controller will return this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponseErrorValidationExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resendCode": {
+      "post": {
+        "summary": "Resend new code to email",
+        "description": "Resends new verification code to email",
+        "operationId": "resendCode",
+        "requestBody": {
+          "description": "Request body contains: email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendCodeRequestExample"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If validation is successful you will receive new verification code to email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendCodeResponseSuccessExample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If validation is failed controller will return this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendCodeResponseFailureExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResetPasswordRequestExample": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          },
+          "password":{
+            "type": "string",
+            "example": "Aa-21251215#",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&_-])[A-Za-z\\d@$!%*#?&_-]+$"
+          },
+          "verification_code": {
+            "type": "number",
+            "example": 151355
+          }
+        }
+      },
+      "ResetPasswordResponseSuccessExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "ResetPasswordResponseFailureCodeNotFoundExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": {
+              "VerificationCodeNotFoundException": "Verification code is incorrect or expired"
+            }
+          }
+        }
+      },
+      "ResetPasswordResponseErrorValidationExample": {
+        "properties": {
+          "errors": {
+            "description": "There are some of errors",
+            "type": "array",
+            "example": {
+              "email": "Isn't email",
+              "password": "Password must contain at least one uppercase letter, lowercase letter and special digit"            }
+          }
+        }
+      },
+      "ResendCodeRequestExample": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          }
+        }
+      },
+      "ResendCodeResponseSuccessExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "ResendCodeResponseFailureExample": {
+        "properties": {
+          "errors": {
+            "description": "There are some of errors",
+            "type": "array",
+            "example": {
+              "EmailNotFoundException": "User with such email not found"
+            }
+          }
+        }
+      },
+      "RefreshRequestExample": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "$2a$10$OIXOfIXV7ZLof6xcc5wke.F/eZvd.OifaxGkXMmnn81XL4uqS3s9q"
+          },
+          "refresh_token": {
+            "type": "string",
+            "example": "$2a$10$OIXOfIXV7ZLof6c5wke.FZvd.OifaxGkXMmnn81XLqS3s9q"
+          }
+        }
+      },
+      "RefreshResponseSuccessExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "RefreshResponseFailureExample": {
+        "properties": {
+          "errors": {
+            "description": "There are some of errors",
+            "type": "array",
+            "example": {
+              "SignatureVerificationException": "signature is incorrect",
+              "TokenExpiredException": "expired"
+            }
+          }
+        }
+      },
+      "VerificationRequestExample": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          },
+          "verification_code": {
+            "type": "number",
+            "example": 125133
+          }
+        }
+      },
+      "VerificationResponseSuccessExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "VerificationResponseFailureExample": {
+        "properties": {
+          "errors": {
+            "description": "There are some of errors",
+            "type": "array",
+            "example": {
+              "CodeExpiredException": "verification code has been expired",
+              "EmailAndCodeNotFoundException": "email and code were not found"
+            }
+          }
+        }
+      },
+      "LoginRequestExample": {
+        "properties": {
+          "verification": {
+            "type": "string",
+            "example": "someuser"
+          },
+          "password": {
+            "type": "string",
+            "example": "Aa-24124124#"
+          }
+        }
+      },
+      "LoginResponseSuccessExample": {
+        "properties": {
+          "access_token":{
+            "type": "string",
+            "example": "your_fresh_access_token"
+          },
+
+          "refresh_token":{
+            "type": "string",
+            "example": "your_fresh_refresh_token"
+          },
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "LoginResponseFailureExample": {
+        "properties": {
+          "access_token":{
+            "type": "string",
+            "example": null
+          },
+
+          "refresh_token":{
+            "type": "string",
+            "example": null
+          },
+          "errors": {
+            "description": "There are some of the errors",
+            "type": "array",
+            "example": {
+              "login": "login or password is incorrect",
+              "registrationFinished": "email isn't confirmed"
+            }
+          }
+        }
+      },
+      "SignupRequestExample": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          },
+          "login": {
+            "type": "string",
+            "example": "someuser"
+          },
+          "password": {
+            "type": "string",
+            "example": "Aa-24124124#",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&_-])[A-Za-z\\d@$!%*#?&_-]+$"
+          }
+        }
+      },
+      "SignupResponseSuccessExample": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "SignupResponseFailureExample": {
+        "properties": {
+          "errors": {
+            "description": "There are some of errors",
+            "type": "array",
+            "example": {
+              "email": "Isn't email",
+              "login": "field shouldn't be empty",
+              "password": "Password must contain at least one uppercase letter, lowercase letter and special digit"
+            }
+          }
+        }
+      },
+      "RecognizeRequestExample": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "Access token for authentication",
+            "example": "your_access_token"
+          },
+          "base64Data": {
+            "type": "string",
+            "format": "base64",
+            "description": "Image data encoded in base64 format",
+            "example": "iVBORw0KGgoAAAANSUhEUgAAAMEAAAAaCAYAAAAOuzhwAAAD4ElEQVR4Xu1ZzU4jMQze56pWXfaAhDghKoQEXKmEiuhxONG+A/MKnYcYHi5LknHGcexJpi2i7PjwCZrE9hfHX37aX7///DUKxZTxizYoFFODikAxeagIFJOHikAxeagIFJOHikAxeQQRPNWt+fj4YNHWz4nhd8ByPBUuY7DYNCLv2fzWvDWteV+dJX1Twtg8zOaX5m5dmdfXV4dq/WDO57EtjHm8HvbJngSnWmynyisHFUEeY/IAxf1yf5n0Aa6WvUBUBCcAFUEeY/Jwfr821XKRtAdf10tTVUtzNV+Yx+qIJwHX5ha32ZrF5zFk+3ebW9cWrlFdH7WRrlqzm63ZtY15u+FJYw590vxf56vQ1ts/m/c2Tjot1kGuIb7307a1eermiq+WNgdPAyKgmK3q3pbMZ4gPxN1tnkM+LOz8fF4hRz1Pzi+O6XMUc/C+eh+lfGO/cu44zC4ezEu1NncXZ8VXHB/nyCKwk8VFTZULC2+FgPtpUeEJ0zH7iAAn1/UzwnPjKf9u8TA/aw/zyXLtPu+aOuJLOXBxJND5z1bb8H+OT4iN7KEIgQ9ngzcyH7MOcXIiyPIV/fK5kxCJAP6/tn/9lafq+hK7o4uAJITuCKwNShK1j8cM7wQATgQgupwvumCu4DefbaFAen4lXNn4gh2XGw4Sf8kvHU/jcKcd3gw4v3hzY/sTEZTxjf2muSuFF0EVPYTd9chdfyiPI4sA2oE4vTrgPkBUWGgnkMbQeBScCKIFHjhJ0sW1XAg/KI4CrnL81I7mSgL4hGtMaC/gYz/TNaD9wReaJ1xXKIpEMMCX+ov9prkrBT4VQpvwUP4SEfQJTCdBF8CNp0VWsJBDOEQEFlCMbhx6y1gfti9c5Qq4svEFu1IRBD9uHvZq0xWb4Jfmjq4B7XdtBWIftGeEXsq395vmrhTfLwJIyipNBGeDkyEVKJdUCYeKAIrfPlSjgq+3kS/JD7cLlsTncpMDvjJIfmnuRotA8Ju1Z9arhC8du5cImIcx1+bbv0AE0Ldr0p3NtuNj0ScwXhTnFyWQ3g1zyTtYBB2n6JsKJ4wmEWKWKxM/2O37MP4c2+cv9p/jA2PGiED0W/MP6T5//Y4/ii/xS3Mnge7+9A3gPrM/ln2RCKRC8wsQfz3H+aBf80WLJvjGMQ4RQfCBi5QsNMYgVyY+bsc5KL0Oef69Lb1eDvGx2EcEYCf5hcJ3c7FFjU/DDF/Jr5Q7CVQEFrbww6/FzKPYxzlABEPgkmhBF0Ch+CkYJQLuCAaoCBQ/FcUigKNNOtZVBIqfimIRKBT/K1QEislDRaCYPFQEislDRaCYPP4BVm57so0m+xoAAAAASUVORK5CYII="
+          },
+          "target_language": {
+            "type": "string",
+            "description": "Optional: Target language for translation is in ISO 639-1 format (ru, en, pl)",
+            "example": "ru"
+          }
+        }
+      },
+      "RecognizeResponseSuccessExample": {
+        "properties": {
+          "recognized_text": {
+            "type": "string",
+            "description": "recognized text from image",
+            "example": "Typo: In word 'someuser' :61"
+          },
+          "translated_text": {
+            "type": "string",
+            "description": "translated text to target language",
+            "example": "Опечатка: В слове «someuser» :61"
+          },
+          "errors": {
+            "type": "array",
+            "example": "{}"
+          }
+        }
+      },
+      "RecognizeResponseFailureExample": {
+        "properties": {
+          "recognized_text": {
+            "type": "string",
+            "description": "recognized text from image",
+            "example": null
+          },
+          "translated_text": {
+            "type": "string",
+            "description": "translated text to target language",
+            "example": null
+          },
+          "errors": {
+            "type": "array",
+            "example": {
+              "TokenNullPointerException": "Token is null",
+              "IncorrectTokenClaim": "Access token has incorrect claim values",
+              "Base64NullPointerException": "base64Data is Blank"
+            }
+          }
+        }
+      }
+    }
+  }
+}
